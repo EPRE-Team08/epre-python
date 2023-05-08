@@ -7,12 +7,6 @@ from torchmetrics import Accuracy
 # Torch imports
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, random_split
-
-# Dataset imports
-from torchvision import transforms
-from torchvision.datasets import MNIST
-import torchvision
 
 
 class NumbersDetector(pl.LightningModule):

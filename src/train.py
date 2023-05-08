@@ -1,12 +1,13 @@
 from model import NumbersDetector
-from datamodule import MNISTDataModule
+from datamodule import BrandsDataModule
+from pathlib import Path
 
 import lightning as pl
 from lightning.pytorch.loggers import CSVLogger
 from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 
 
-mnist = MNISTDataModule()
+brands_dm = BrandsDataModule(Path(r"data\processed"))
 model = NumbersDetector()
 trainer = pl.Trainer(
     accelerator="auto",
@@ -15,4 +16,4 @@ trainer = pl.Trainer(
     logger=CSVLogger(save_dir="logs/"),
     callbacks=[EarlyStopping(monitor="train_loss", mode="min")],
 )
-trainer.fit(model, mnist)
+trainer.fit(model, brands_dm)
