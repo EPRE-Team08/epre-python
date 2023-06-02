@@ -3,35 +3,36 @@ import os
 # Lightning imports
 import lightning as pl
 from torchmetrics import Accuracy
+from torchvision.models import mobilenet_v3_small, MobileNet_V3_Small_Weights
 
 # Torch imports
 import torch
 import torch.nn as nn
 
 
-class NumbersDetector(pl.LightningModule):
-    def __init__(self, hidden_size=128, learning_rate=1e-3):
+class BrandsDetector(pl.LightningModule):
+    def __init__(self, learning_rate=1e-3):
         super().__init__()
 
         # Set our init args as class attributes
-        self.hidden_size = hidden_size
         self.learning_rate = learning_rate
         self.loss = nn.CrossEntropyLoss()  # loss function
 
         # Hardcode some dataset specific attributes
-        self.num_classes = 10
-        self.input_size = 28 * 28  # Image dimensions
+        self.num_classes = 3
+        self.input_size = 224 * 224  # Image dimensions
 
         # Define PyTorch model
-        self.model = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(self.input_size, self.hidden_size),
-            nn.ReLU(),
-            nn.Linear(self.hidden_size, 256),
-            nn.ReLU(),
-            nn.Linear(256, 512),
-            nn.ReLU(),
-            nn.Linear(512, self.num_classes),
+
+        self.model = mobilenet_v3_small(
+            weights=MobileNet_V3_Small_Weights.IMAGENET1K_V1
+        )
+        self.model.classifier[3] = nn.Linear(
+            in_features=1024, out_features=3, bias=True
+        )
+
+        model = torch.hub.load(
+            "pytorch/vision:v0.10.0", "mobilenet_v2", pretrained=True
         )
 
         # torchmetris accuracy
