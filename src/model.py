@@ -27,17 +27,19 @@ class BrandsDetector(pl.LightningModule):
         self.model = mobilenet_v3_small(
             weights=MobileNet_V3_Small_Weights.IMAGENET1K_V1
         )
+
+        # Freeze all layers except the last one
+        for param in self.model.parameters():
+            param.requires_grad = False
+
+        # Change the last layer
         self.model.classifier[3] = nn.Linear(
             in_features=1024, out_features=3, bias=True
         )
 
-        model = torch.hub.load(
-            "pytorch/vision:v0.10.0", "mobilenet_v2", pretrained=True
-        )
-
         # torchmetris accuracy
-        self.val_accuracy = Accuracy(task="multiclass", num_classes=10)
-        self.test_accuracy = Accuracy(task="multiclass", num_classes=10)
+        self.val_accuracy = Accuracy(task="multiclass", num_classes=3)
+        self.test_accuracy = Accuracy(task="multiclass", num_classes=3)
 
     def forward(self, x):
         return self.model(x)
