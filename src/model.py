@@ -1,11 +1,9 @@
-import os
-
 # Lightning imports
 import lightning as pl
 from torchmetrics import Accuracy
-from torchvision.models import mobilenet_v3_small, MobileNet_V3_Small_Weights
 
 # Torch imports
+from torchvision.models import mobilenet_v3_small, MobileNet_V3_Small_Weights
 import torch
 import torch.nn as nn
 

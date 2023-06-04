@@ -8,8 +8,6 @@ import torch
 from torch.utils.data import DataLoader
 
 # Dataset imports
-from torchvision import datasets
-
 from brands_dataset import BrandsDataset
 
 

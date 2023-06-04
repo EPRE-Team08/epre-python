@@ -5,7 +5,6 @@ from pathlib import Path
 import torch
 import lightning as pl
 from lightning.pytorch.loggers import CSVLogger
-from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 
 import albumentations as A
 from albumentations.pytorch.transforms import ToTensorV2
