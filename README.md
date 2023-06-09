@@ -37,5 +37,8 @@ In order to train the model run: "`python src/train.py`". This will train the mo
 
 To visualize the training results, run: "`python src/plot_training.py`"
 
+![Training Results](training_results.png "Training Results")
+
 If you want to export the checkpoints to android simply run:"`python src/export_model.py`"
+
 

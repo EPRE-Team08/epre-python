@@ -28,17 +28,17 @@ class BrandsDataModule(pl.LightningDataModule):
     def setup(self, stage: str):
         if stage == "test":
             self.brands_dataset_test = BrandsDataset(
-                root_dir=self.data_dir.joinpath("processed").resolve(),
+                root_dir=self.data_dir.joinpath("processed/test").resolve(),
                 transform=self.v_transform,
             )
         if stage == "fit":
             self.brands_dataset_train = BrandsDataset(
-                root_dir=self.data_dir.joinpath("processed").resolve(),
+                root_dir=self.data_dir.joinpath("processed/train").resolve(),
                 transform=self.t_transform,
             )
 
             self.brands_dataset_val = BrandsDataset(
-                root_dir=self.data_dir.joinpath("processed").resolve(),
+                root_dir=self.data_dir.joinpath("processed/val").resolve(),
                 transform=self.v_transform,
             )
 
@@ -50,10 +50,10 @@ class BrandsDataModule(pl.LightningDataModule):
 
     def val_dataloader(self):
         return DataLoader(
-            self.brands_dataset_val, batch_size=self.batch_size, shuffle=True
+            self.brands_dataset_val, batch_size=self.batch_size, shuffle=False
         )
 
     def test_dataloader(self):
         return DataLoader(
-            self.brands_dataset_test, batch_size=self.batch_size, shuffle=True
+            self.brands_dataset_test, batch_size=self.batch_size, shuffle=False
         )

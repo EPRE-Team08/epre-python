@@ -15,24 +15,27 @@ DEBUG = True
 train_transforms = A.Compose(
     [
         # Pixel-level transforms
-        A.RGBShift(always_apply=True),
+        A.RGBShift(always_apply=True, r_shift_limit=127, g_shift_limit=127, b_shift_limit=127),
         A.RandomFog(p=0.2),
         A.RandomRain(p=0.2),
         A.RandomSnow(p=0.2),
-        A.InvertImg(),
+        A.RandomSunFlare(p=0.2),
         # Spatial-level transforms
         A.Rotate(180, always_apply=True),
         A.HorizontalFlip(),
-        A.Perspective(p=0.8),
+        # A.RandomGridShuffle(grid=(2, 2), always_apply=True),        
         A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
         ToTensorV2(),
+        
     ]
 )
 
 val_transfroms = A.Compose(
     [
+        A.RGBShift(always_apply=True, r_shift_limit=127, g_shift_limit=127, b_shift_limit=127),
+        A.Rotate(180, always_apply=True),        
         A.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-        ToTensorV2(),
+        ToTensorV2(),        
     ]
 )
 
@@ -45,6 +48,10 @@ trainer = pl.Trainer(
     logger=CSVLogger(save_dir="logs/"),
 )
 trainer.fit(model, brands_dm)
+
+trainer.test(model, datamodule=brands_dm)
+
+
 
 # save model as pt file
 torch.save(model.state_dict(), "model.pt")
